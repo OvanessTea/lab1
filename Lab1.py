@@ -65,10 +65,11 @@ unitName = choice()
 unit = getUnit(unitName)
 
 timeLine = []
-for i in range(0, 1):
-    timeLine.append(i)
+for i in range(0, 10000):
+    timeLine.append(i/1000)
 [y, x] = matlab.step(unit, timeLine)
 graph(1, 'Переходная характеристика', y, x)
 [y, x] = matlab.impulse(unit, timeLine)
 graph(2, 'Импульсная характеристика', y, x)
+pyplot.show()
 
