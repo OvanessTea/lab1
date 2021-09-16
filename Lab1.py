@@ -7,6 +7,9 @@ import colorama as color
 def choice():
     inertialessUnitName = 'Безынерционное звено'
     aperiodUnitName = 'Апериодическое звено'
+    integratingUnitName = 'Интегрирующее звено'
+    idealDifferentiatingUnitName = 'Идеальное дифференцирующее звено'
+    realDifferentiatingUnitName = 'Реальное дифференцирующее звено'
 
     needNewChoice = True
 
@@ -14,7 +17,10 @@ def choice():
         print(color.Style.RESET_ALL)
         userInput = input('Введите номер команды: \n'
                           '1 - ' + inertialessUnitName + ';\n'
-                          '2 - ' + aperiodUnitName + '.\n')
+                          '2 - ' + aperiodUnitName + ';\n'
+                          '3 - ' + integratingUnitName + ';\n'
+                          '4 - ' + idealDifferentiatingUnitName + ';\n'
+                          '5 - ' + realDifferentiatingUnitName + '.\n')
         if userInput.isdigit():
             needNewChoice = False
             userInput = int(userInput)
@@ -22,6 +28,12 @@ def choice():
                 name = 'Безынерционное звено'
             elif userInput == 2:
                 name = 'Апериодическое звено'
+            elif userInput == 3:
+                name = 'Интегрирующее звено'
+            elif userInput == 4:
+                name = 'Идеальное дифференцирующее звено'
+            elif userInput == 5:
+                name = 'Реальное дифференцирующее звено'
             else:
                 print(color.Fore.RED + '\nНедоступное значение')
                 needNewChoice = True
@@ -45,6 +57,12 @@ def getUnit(name):
                 unit = matlab.tf([k], [1])
             elif name == 'Апериодическое звено':
                 unit = matlab.tf([k], [T, 1])
+            elif name == 'Интегрирующее звено':
+                unit = matlab.tf([k], [1, 0])
+            elif name == 'Идеальное дифференцирующее звено':
+                unit = matlab.tf([k, 0], [1])
+            elif name == 'Реальное дифференцирующее звено':
+                unit = matlab.tf([k, 0], [T, 1])
         else:
             print(color.Fore.RED + '\nПожалуйста, введите числовое значение.\n')
             needNewChoice = True
