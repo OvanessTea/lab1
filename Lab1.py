@@ -46,26 +46,31 @@ def choice():
 def getUnit(name):
     needNewChoice = True
     while needNewChoice:
-        needNewChoice = False
         k = input('Пожалуйста, введите коэффициент "k": ')
         T = input('Пожалуйста, введите коэффициент "T": ')
 
-        if k.isdigit() and T.isdigit():
-            k = int(k)
-            T = int(T)
+        try:
+            needNewChoice = False
+            k = float(k)
+            T = float(T)
             if name == 'Безынерционное звено':
                 unit = matlab.tf([k], [1])
             elif name == 'Апериодическое звено':
                 unit = matlab.tf([k], [T, 1])
             elif name == 'Интегрирующее звено':
-                unit = matlab.tf([k], [1, 0])
+                if T == 0:
+                    unit = matlab.tf([k], [1, 0])
+                else:
+                    unit = matlab.tf([1], [T, 1])
             elif name == 'Идеальное дифференцирующее звено':
-                unit = matlab.tf([k, 0], [1])
+                if T == 0:
+                    unit = matlab.tf([k, 0], [1 / 100000, 1])
+                else:
+                    unit = matlab.tf([t, 0], [1])
             elif name == 'Реальное дифференцирующее звено':
                 unit = matlab.tf([k, 0], [T, 1])
-        else:
+        except:
             print(color.Fore.RED + '\nПожалуйста, введите числовое значение.\n')
-            needNewChoice = True
     return unit
 
 def graph(num, title, y, x):
@@ -85,9 +90,13 @@ unit = getUnit(unitName)
 timeLine = []
 for i in range(0, 10000):
     timeLine.append(i/1000)
+
 [y, x] = matlab.step(unit, timeLine)
 graph(1, 'Переходная характеристика', y, x)
 [y, x] = matlab.impulse(unit, timeLine)
 graph(2, 'Импульсная характеристика', y, x)
 pyplot.show()
-
+matlab.bode(unit, dB=False)
+pyplot.plot()
+pyplot.xlabel('Частота, Гц')
+pyplot.show()
