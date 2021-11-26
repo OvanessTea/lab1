@@ -73,7 +73,7 @@ def stabilityTest(koc):
     # Вывод диаграммы Найквиста
     matlab.nyquist(openSau)
     pyplot.grid(True)
-    pyplot.title('Nyquist Diagram of openSau(s) = 21/(200 * s^3 + 105 * s^2 + 18 * s + 1)')
+    pyplot.title('Nyquist Diagram of openSau(s) = 42/(-200 * s^3 - 105 * s^2 + 18 * s + 1)')
     pyplot.xlabel('Re(s)')
     pyplot.ylabel('Im(s)')
     pyplot.show()
@@ -95,6 +95,7 @@ def stabilityTest(koc):
     numeratorOfSAU = [float(x) for x in equivalentLink.num[0][0]]
     denominatorOfSAY = [float(x) for x in equivalentLink.den[0][0]]
     functionMikhailov = []
+    print(functionMikhailov)
     for i in range(len(denominatorOfSAY) - len(numeratorOfSAU)):
         numeratorOfSAU.insert(0, 0)
     for i in range(len(numeratorOfSAU)):
@@ -176,8 +177,8 @@ def stabilityTest(koc):
         print('Система устойчива по критерию Гурвица')
 
     x = Symbol('x')
-    koc = solve((105*18-200*(1+21*x)), x)
-
+    koc = solve((105*(18+21*x)-200), x)
+    print(koc)
     # Возвращение предельного значения koc
     return koc
 
